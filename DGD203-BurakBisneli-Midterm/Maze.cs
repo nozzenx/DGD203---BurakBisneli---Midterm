@@ -19,6 +19,8 @@ public static class Maze
         
         Vector mazeBoundary = new Vector(_width, _height); // Max space of maze can be
         List<Vector> maze = new List<Vector>(); // Listing the maze coordinates.
+        
+        List<Vector> walls = new List<Vector>();
 
         List<Vector> roadStarts = new List<Vector>
         {
@@ -52,7 +54,7 @@ public static class Maze
             {
                 Vector newRoad = new Vector(currentRoad.X + direction.X, currentRoad.Y + direction.Y);
                 if (newRoad.X >= 0 && newRoad.X < mazeBoundary.X && newRoad.Y >= 0 && newRoad.Y < mazeBoundary.Y &&
-                    !maze.Contains(newRoad))
+                    !maze.Contains(newRoad) && !walls.Contains(newRoad))
                 {
                     neighborCells.Add(newRoad);
                 }
@@ -67,6 +69,13 @@ public static class Maze
 
             int randomCell = Rnd.Next(neighborCells.Count); // We choose random cell inside neighbour cells we add up.
             Vector nextCell = neighborCells[randomCell]; // Making the random cell our next cell.
+
+            neighborCells.Remove(nextCell);
+
+            foreach (Vector cell in neighborCells)
+            {
+                walls.Add(cell);
+            }
             
             maze.Add(nextCell); // Adding the next cell to our maze road.
             currentRoad = nextCell; // And make our current position to next cell for creating the next road if possible.
@@ -74,11 +83,17 @@ public static class Maze
             neighborCells.Clear(); // Clearing our neighbour cells because our current cell is different now and our neighbour cells going to change with that.
 
         }
+        Console.WriteLine($"Maze Last Values: X:{maze.Last().X}, Y:{maze.Last().Y}");
+        Console.WriteLine($"{width}x{height}");
         return maze;
     }
 
     public static void Print(List<Vector> maze)
     {
+        while (( maze.Last().X != 0) || (maze.Last().Y != 0) || (maze.Last().Y != _height - 1) || (maze.Last().X != _width - 1))
+        {
+            maze = Generate(_width, _height);
+        }
         char[,] grid = new char[_width, _height];
 
         for (int y = 0; y < _height; y++)
