@@ -6,7 +6,8 @@ public class Game
 
     public void GameTest()
     {
-       Maze.Generate(6, 6);
+       List<Maze.Vector> map = Maze.Generate(20, 20);
+       Maze.Print(map);
     }
 
     public void GameLoop()

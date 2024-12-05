@@ -6,8 +6,6 @@ namespace DGD203_BurakBisneli_Midterm;
 public static class Tools
 {
     
-    
-   
     public static int GetChoice(string question, string[] options)
     {
         Console.WriteLine("---------------------------------------");
