@@ -12,3 +12,4 @@ C:\Users\burak\Desktop\ISU-DigitalGameDesign\DGD203 Game Programming 1\DGD203-Bu
 C:\Users\burak\Desktop\ISU-DigitalGameDesign\DGD203 Game Programming 1\DGD203-BurakBisneli-Midterm\DGD203-BurakBisneli-Midterm\obj\Debug\net8.0\DGD203-BurakBisneli-Midterm.pdb
 C:\Users\burak\Desktop\ISU-DigitalGameDesign\DGD203 Game Programming 1\DGD203-BurakBisneli-Midterm\DGD203-BurakBisneli-Midterm\obj\Debug\net8.0\DGD203-BurakBisneli-Midterm.genruntimeconfig.cache
 C:\Users\burak\Desktop\ISU-DigitalGameDesign\DGD203 Game Programming 1\DGD203-BurakBisneli-Midterm\DGD203-BurakBisneli-Midterm\obj\Debug\net8.0\ref\DGD203-BurakBisneli-Midterm.dll
+C:\Users\burak\Desktop\ISU-DigitalGameDesign\DGD203 Game Programming 1\DGD203-BurakBisneli-Midterm\DGD203-BurakBisneli-Midterm\obj\Debug\net8.0\DGD203-BurakBisneli-Midterm.sourcelink.json

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DGD203-BurakBisneli-Midterm")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+706b1bfe1017771fe99d47b11c798462b574e9a8")]
 [assembly: System.Reflection.AssemblyProductAttribute("DGD203-BurakBisneli-Midterm")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DGD203-BurakBisneli-Midterm")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
