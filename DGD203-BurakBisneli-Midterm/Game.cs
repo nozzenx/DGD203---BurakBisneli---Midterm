@@ -3,20 +3,27 @@
 public class Game 
 {
     private bool _isRunning = true;
+    private bool _mapGenerated = false;
+    private List<Maze.Vector> _map;
 
     public void GameTest()
     {
-       List<Maze.Vector> map = Maze.GenerateFirst(20, 20);
-       Maze.GenerateSecond(map);
-       if (map != null)
-       {
-            Maze.Print(map);
-       }
-       else
-       {
-           map = Maze.GenerateFirst(20, 20);
-           Maze.GenerateSecond(map);
-       }
+        while (!_mapGenerated) // I use ChatGPT for this my code giving error sometimes and I want to avoid that and try again.
+        {
+            try
+            {
+                _map = Maze.Generate(20, 20, 5);
+                
+                _mapGenerated = true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        Maze.Print(_map);
+        
+        
     }
 
     public void GameLoop()

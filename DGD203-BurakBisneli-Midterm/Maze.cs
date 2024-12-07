@@ -25,7 +25,7 @@ public static class Maze
         new Vector(0, -1),
     };
 
-    public static List<Vector> GenerateFirst(int width, int height)
+    public static List<Vector> GenerateBaseRoad(int width, int height)
     {
         _width = width;
         _height = height;
@@ -126,10 +126,9 @@ public static class Maze
        
     }
 
-    public static List<Vector> GenerateSecond(List<Vector> maze)
+    public static List<Vector> GenerateConnectingRoads(List<Vector> maze)
     {
-        while (maze.Count < 90)
-        {
+       
             Vector randomPointInMaze = maze[Rnd.Next(maze.Count)];
         Vector currentRoad = randomPointInMaze;
         
@@ -186,7 +185,14 @@ public static class Maze
             _neighborCells.Clear(); // Clearing our neighbour cells because our current cell is different now and our neighbour cells going to change with that.
 
         }
-        }
         return _maze;
+    }
+
+    public static List<Vector> Generate(int width, int height, int connectingRoads)
+    {
+        List<Vector> maze = GenerateBaseRoad(width, height);
+        for (int i = 0; i < connectingRoads; i++)
+            GenerateConnectingRoads(maze);
+        return maze;
     }
 }
