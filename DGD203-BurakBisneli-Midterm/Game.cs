@@ -6,8 +6,17 @@ public class Game
 
     public void GameTest()
     {
-       List<Maze.Vector> map = Maze.Generate(20, 20);
-       Maze.Print(map);
+       List<Maze.Vector> map = Maze.GenerateFirst(20, 20);
+       Maze.GenerateSecond(map);
+       if (map != null)
+       {
+            Maze.Print(map);
+       }
+       else
+       {
+           map = Maze.GenerateFirst(20, 20);
+           Maze.GenerateSecond(map);
+       }
     }
 
     public void GameLoop()
