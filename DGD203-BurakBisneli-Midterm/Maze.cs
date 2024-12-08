@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Net.Http.Headers;
+using System.Numerics;
 
 namespace DGD203_BurakBisneli_Midterm;
 
@@ -16,6 +17,12 @@ public static class Maze
     private static List<Vector> _maze = new List<Vector>();
     private static List<Vector> _walls = new List<Vector>();
     private static List<Vector> _neighborCells = new List<Vector>(); // Making a neighbour cells list for getting the cells we can go.
+    private static Vector _playerPos;
+    
+    private static Vector _npcPos;
+    private static Vector _itemPos;
+    private static bool _itemCollected = false;
+    public static bool itemGiven = false;
 
     private static readonly Vector[] Directions = new Vector[] // I used ChatGPT for suggestions, and it recommends that for more readable code. 
     {
@@ -97,8 +104,20 @@ public static class Maze
 
         foreach (var cell in maze)
         {
-            grid[cell.X, cell.Y] = ' ';
+            if (cell != _playerPos || cell != _npcPos || cell != _itemPos)
+                grid[cell.X, cell.Y] = ' ';
+            
         }
+        foreach (var cell in maze)
+        {
+            if (cell == _playerPos )
+                grid[cell.X, cell.Y] = 'X';
+            if (cell == _itemPos && !_itemCollected)
+                grid[cell.X, cell.Y] = 'I';
+            if (cell == _npcPos)
+                grid[cell.X, cell.Y] = 'N';
+        }
+        
 
         for (int y = 0; y < _height; y++)
         {
@@ -120,11 +139,7 @@ public static class Maze
             new Vector(boundary.X-1, Rnd.Next(boundary.Y)),
         ];
     }
-
-    private static void GenerateNpc(List<Vector> maze)
-    {
-       
-    }
+    
 
     public static List<Vector> GenerateConnectingRoads(List<Vector> maze)
     {
@@ -193,6 +208,224 @@ public static class Maze
         List<Vector> maze = GenerateBaseRoad(width, height);
         for (int i = 0; i < connectingRoads; i++)
             GenerateConnectingRoads(maze);
+
+        UpdatePlayerPos(maze.First());
+        GenerateOtherObjects();
+        Console.WriteLine($"player pos: {_playerPos}");
         return maze;
+    }
+
+    private static void UpdatePlayerPos(Vector playerPos)
+    {
+        _playerPos = playerPos;
+        _maze.Add(_playerPos);
+    }
+    
+    public static void UpdatePlayerPos(int direction, string playerName)
+    {
+        switch (direction)
+        {
+            case 1:
+                if(_maze.Contains(new Vector(_playerPos.X, _playerPos.Y - 1)))
+                    _playerPos.Y -= 1;
+                else
+                {
+                    Console.WriteLine($"You can't go that way because there's a wall.");
+                }
+                break;
+            case 2:
+                if(_maze.Contains(new Vector(_playerPos.X, _playerPos.Y + 1)))
+                    _playerPos.Y += 1;
+                else
+                {
+                    Console.WriteLine($"You can't go that way because there's a wall.");
+                }
+                break;
+            case 3:
+                if(_maze.Contains(new Vector(_playerPos.X - 1, _playerPos.Y)))
+                    _playerPos.X -= 1;
+                else
+                {
+                    Console.WriteLine($"You can't go that way because there's a wall.");
+                }
+                break;
+            case 4 :
+                if(_maze.Contains(new Vector(_playerPos.X + 1, _playerPos.Y)))
+                    _playerPos.X += 1;
+                else
+                {
+                    Console.WriteLine($"You can't go that way because there's a wall.");
+                }
+                break;
+        }
+
+        if (_playerPos == _itemPos && !_itemCollected)
+        {
+            int answerInput = 0;
+            bool isValidInput = false;
+            while (!isValidInput)
+            {
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("There's a magic gauntlet here. Should I take it?");
+                Console.WriteLine("1. Take the magic gauntlet.");
+                Console.WriteLine("2. Leave the magic gauntlet.");
+                Console.WriteLine("---------------------------------");
+                string input = Console.ReadLine()!;
+                
+                if (string.IsNullOrEmpty(input))
+                    Console.WriteLine("Please enter a valid input.");
+                else
+                {
+                    try
+                    {
+                        answerInput = Convert.ToInt32(input);
+                        isValidInput = true;
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Please enter a valid input.");
+                    }
+                }
+            }
+
+            switch (answerInput)
+            {
+                case 1:
+                    _itemCollected = true;
+                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine($"You got magic gauntlet.");
+                    Console.WriteLine("---------------------------------");
+                    Tools.WaitSeconds(2);
+                    
+                    break;
+                case 2:
+                    Console.WriteLine("---------------------------------");
+                    Console.WriteLine($"You leaved the magic gauntlet.");
+                    Console.WriteLine("---------------------------------");
+                    Tools.WaitSeconds(2);
+                    break;
+            }
+        }
+
+        if (_playerPos == _npcPos)
+        {
+            int answerInput = 0;
+            bool isValidInput = false;
+            while (!isValidInput)
+            {
+                Console.WriteLine("---------------------------------");
+                Console.WriteLine("There's a sorcerer here. Should I talk with him?");
+                Console.WriteLine("1. Talk with sorcerer.");
+                Console.WriteLine("2. Leave the sorcerer.");
+                Console.WriteLine("---------------------------------");
+                string input = Console.ReadLine()!;
+                
+                if (string.IsNullOrEmpty(input))
+                    Console.WriteLine("Please enter a valid input.");
+                else
+                {
+                    try
+                    {
+                        answerInput = Convert.ToInt32(input);
+                        isValidInput = true;
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Please enter a valid input.");
+                    }
+                }
+            }
+
+            switch (answerInput)
+            {
+                case 1:
+                    
+                    int sorcererAnswerInput = 0;
+                    bool sorcererTalkLoop = false;
+                    while (!sorcererTalkLoop)
+                    {
+                        Console.WriteLine("---------------------------------");
+                        Console.WriteLine($"{playerName}: Hello, can i ask something?");
+                        Console.WriteLine($"Sorcerer: Hello young man, you can.");
+                        Console.WriteLine($"1. Where are we? I was sleeping in my bed and suddenly I found myself here.");
+                        Console.WriteLine($"2. What are you doing here?");
+                        Console.WriteLine($"3. Are you a sorcerer?");
+                        if(_itemCollected)
+                            Console.WriteLine($"4. Give the magic gauntlet.");
+                        Console.WriteLine("---------------------------------");
+                        string input = Console.ReadLine()!;
+                
+                        if (string.IsNullOrEmpty(input))
+                            Console.WriteLine("Please enter a valid input.");
+                        else
+                        {
+                            try
+                            {
+                                sorcererAnswerInput = Convert.ToInt32(input);
+                                switch (sorcererAnswerInput)
+                                {
+                                    case 1:
+                                        Console.WriteLine($"Sorcerer: We are in the secret labyrinth right now.");
+                                        Tools.WaitSeconds(2);
+                                        Console.WriteLine($"{playerName}: Okay, but why am i here?");
+                                        Tools.WaitSeconds(2);
+                                        Console.WriteLine($"Sorcerer: You gotta be under the influence of a dark magic. You're asleep right now and you can't wake up until you get out of here.");
+                                        Tools.WaitSeconds(2);
+                                        Console.WriteLine($"{playerName}: How can i leave here.");
+                                        Tools.WaitSeconds(2);
+                                        Console.WriteLine($"Sorcerer: I can teleport you to the exit but you need to help me first.");
+                                        Tools.WaitSeconds(2);
+                                        Console.WriteLine($"{playerName}: What kind of help?");
+                                        Tools.WaitSeconds(2);
+                                        Console.WriteLine($"Sorcerer: Find my magic gauntlet in the labyrinth and bring it to me and i can help you get out of here.");
+                                        Tools.WaitSeconds(2);
+                                        Console.WriteLine($"{playerName}: Okay, i will find and get it to you.");
+                                        Tools.WaitSeconds(2);
+                                        sorcererTalkLoop = true;
+                                        break;
+                                    case 2:
+                                        Console.WriteLine($"Sorcerer: I'm relaxing a bit. I will be leaving soon.");
+                                        Tools.WaitSeconds(2);
+                                        break;
+                                    case 3:
+                                        Console.WriteLine($"Sorcerer: Dont you see my staff. Of course im a sorcerer. ");
+                                        Tools.WaitSeconds(2);
+                                        break;
+                                    case 4:
+                                        if (_itemCollected)
+                                        {
+                                            Console.WriteLine($"{playerName}: I found your gauntlet.");
+                                            Tools.WaitSeconds(2);
+                                            Console.WriteLine($"Sorcerer: Thank you, young man I will teleport you to the exit now.");
+                                            Tools.WaitSeconds(2);
+                                            Console.WriteLine($"{playerName}: Good to see you mr sorcerer.");
+                                            Tools.WaitSeconds(2);
+                                            itemGiven = true;
+                                            sorcererTalkLoop = true;
+                                            break;   
+                                        }
+                                        break;
+                                }
+                            }
+                            catch (FormatException)
+                            {
+                                Console.WriteLine("Please enter a valid input.");
+                            }
+                        }
+                    }
+                    
+                    break;
+                case 2:
+                    break;
+            }
+        }
+    }
+
+    private static void GenerateOtherObjects()
+    {
+        _npcPos = _maze[Rnd.Next(_maze.Count)];
+        _itemPos = _maze[Rnd.Next(_maze.Count)];
+        _maze.Add(_npcPos);
+        _maze.Add(_itemPos);
     }
 }
