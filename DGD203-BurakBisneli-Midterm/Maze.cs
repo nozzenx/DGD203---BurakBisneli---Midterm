@@ -49,7 +49,7 @@ public static class Maze
         
         while (_maze.Count < _width * _height) // We have width * height cells for total and if our mazes cells count > total cells we cant generate more road cells.
         {
-            Console.WriteLine(currentRoad.X + ", " + currentRoad.Y); 
+            // Console.WriteLine(currentRoad.X + ", " + currentRoad.Y); 
 
             foreach (var direction in Directions) // For all possible directions we create a new road and add them to neighbour cells.
             {
@@ -64,7 +64,7 @@ public static class Maze
 
             if (_neighborCells.Count == 0) // If no possible roads left we break the loop.
             {
-                Console.WriteLine("No neighbors left.");
+                // Console.WriteLine("No neighbors left.");
                 break;
             }
 
@@ -84,9 +84,9 @@ public static class Maze
             _neighborCells.Clear(); // Clearing our neighbour cells because our current cell is different now and our neighbour cells going to change with that.
 
         }
-        Console.WriteLine($"Maze Last Point Values: X:{_maze.Last().X}, Y:{_maze.Last().Y}");
-        Console.WriteLine($"{width}x{height}");
-        Console.WriteLine(_maze.Count);
+        // Console.WriteLine($"Maze Last Point Values: X:{_maze.Last().X}, Y:{_maze.Last().Y}");
+        // Console.WriteLine($"{width}x{height}");
+        // Console.WriteLine(_maze.Count);
         return _maze;
     }
 
@@ -115,7 +115,7 @@ public static class Maze
             if (cell == _itemPos && !_itemCollected)
                 grid[cell.X, cell.Y] = 'I';
             if (cell == _npcPos)
-                grid[cell.X, cell.Y] = 'N';
+                grid[cell.X, cell.Y] = 'S';
         }
         
 
@@ -165,7 +165,7 @@ public static class Maze
         
         while (_maze.Count < _width * _height) // We have width * height cells for total and if our mazes cells count > total cells we cant generate more road cells.
         {
-            Console.WriteLine(currentRoad.X + ", " + currentRoad.Y); 
+            // Console.WriteLine(currentRoad.X + ", " + currentRoad.Y); 
 
             foreach (var direction in Directions) // For all possible directions we create a new road and add them to neighbour cells.
             {
@@ -180,7 +180,7 @@ public static class Maze
 
             if (_neighborCells.Count == 0) // If no possible roads left we break the loop.
             {
-                Console.WriteLine("No neighbors left.");
+                // Console.WriteLine("No neighbors left.");
                 break;
             }
 
@@ -211,7 +211,7 @@ public static class Maze
 
         UpdatePlayerPos(maze.First());
         GenerateOtherObjects();
-        Console.WriteLine($"player pos: {_playerPos}");
+        // Console.WriteLine($"player pos: {_playerPos}");
         return maze;
     }
 
@@ -221,7 +221,7 @@ public static class Maze
         _maze.Add(_playerPos);
     }
     
-    public static void UpdatePlayerPos(int direction, string playerName)
+    public static void UpdatePlayerPos(int direction, string? playerName)
     {
         switch (direction)
         {
@@ -295,14 +295,16 @@ public static class Maze
                     Console.WriteLine("---------------------------------");
                     Console.WriteLine($"You got magic gauntlet.");
                     Console.WriteLine("---------------------------------");
-                    Tools.WaitSeconds(2);
+                    Console.WriteLine("Press enter to continue...");
+                    Console.ReadLine();
                     
                     break;
                 case 2:
                     Console.WriteLine("---------------------------------");
                     Console.WriteLine($"You leaved the magic gauntlet.");
                     Console.WriteLine("---------------------------------");
-                    Tools.WaitSeconds(2);
+                    Console.WriteLine("Press enter to continue...");
+                    Console.ReadLine();
                     break;
             }
         }
@@ -380,16 +382,21 @@ public static class Maze
                                         Console.WriteLine($"Sorcerer: Find my magic gauntlet in the labyrinth and bring it to me and i can help you get out of here.");
                                         Tools.WaitSeconds(2);
                                         Console.WriteLine($"{playerName}: Okay, i will find and get it to you.");
-                                        Tools.WaitSeconds(2);
+                                        
+                                        Console.WriteLine("Press enter to continue...");
+                                        Console.ReadLine();
                                         sorcererTalkLoop = true;
                                         break;
                                     case 2:
                                         Console.WriteLine($"Sorcerer: I'm relaxing a bit. I will be leaving soon.");
-                                        Tools.WaitSeconds(2);
+                                        
+                                        Console.WriteLine("Press enter to continue...");
+                                        Console.ReadLine();
                                         break;
                                     case 3:
                                         Console.WriteLine($"Sorcerer: Dont you see my staff. Of course im a sorcerer. ");
-                                        Tools.WaitSeconds(2);
+                                        Console.WriteLine("Press enter to continue...");
+                                        Console.ReadLine();
                                         break;
                                     case 4:
                                         if (_itemCollected)
@@ -399,7 +406,8 @@ public static class Maze
                                             Console.WriteLine($"Sorcerer: Thank you, young man I will teleport you to the exit now.");
                                             Tools.WaitSeconds(2);
                                             Console.WriteLine($"{playerName}: Good to see you mr sorcerer.");
-                                            Tools.WaitSeconds(2);
+                                            Console.WriteLine("Press enter to continue...");
+                                            Console.ReadLine();
                                             itemGiven = true;
                                             sorcererTalkLoop = true;
                                             break;   
